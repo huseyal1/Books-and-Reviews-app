@@ -2,7 +2,7 @@
 `User` will be able to add, review (via `Review`) and categorize (via `Category`) `Book`s.
 
 ## Schema
-[diagram.png](url)
+![Schema](diagram.png)
 
 ## Query
 #### Formulation:

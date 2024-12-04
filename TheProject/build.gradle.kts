@@ -2,7 +2,7 @@ plugins {
     id("java")
 }
 
-group = "org.example"
+group = "ctu.fit.tjv.semester_work"
 version = "1.0-SNAPSHOT"
 
 repositories {

@@ -2,6 +2,9 @@ package ctu.fit.tjv.semester_work.model ;
 
 import jakarta.persistence.*;
 
+import java.util.Collection;
+import java.util.List;
+
 @Entity
 public class Book {
 
@@ -20,6 +23,9 @@ public class Book {
     @Column(unique = true)
     private Long ISBN ;
 
+    @OneToMany(mappedBy = "book", orphanRemoval = true)
+    private List<Review> reviewList;
+
     /* Constructors : */
 
     public Book() {
@@ -27,7 +33,7 @@ public class Book {
     }
 
     public Book(String title, String author, Integer publication_year,
-                String description, String category_name, Long ISBN) {
+                String description, String category_name, Long ISBN, List<Review> reviewList) {
 
         this.title = title ;
         this.author = author ;
@@ -35,6 +41,7 @@ public class Book {
         this.description = description ;
         this.category_name = category_name ;
         this.ISBN = ISBN ;
+        this.reviewList = reviewList ;
     }
 
     /* Getters and Setters for each field : */
@@ -96,4 +103,11 @@ public class Book {
         this.ISBN = newISBN ;
     }
 
+    public List<Review> getReviewList() {
+        return reviewList;
+    }
+
+    public void setReviewList(List<Review> newReviewList) {
+        this.reviewList = newReviewList;
+    }
 }

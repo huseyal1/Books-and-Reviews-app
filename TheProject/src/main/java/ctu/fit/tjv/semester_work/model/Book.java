@@ -5,9 +5,12 @@ import jakarta.persistence.*;
 @Entity
 public class Book {
 
+    /* Fields : */
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long book_id ;
+
     private String title ;
     private String author ;
     private Integer publication_year ;
@@ -33,6 +36,8 @@ public class Book {
         this.category_name = category_name ;
         this.ISBN = ISBN ;
     }
+
+    /* Getters and Setters for each field : */
 
     public Long getBook_id() {
         return book_id ;

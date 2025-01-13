@@ -1,6 +1,7 @@
 package ctu.fit.tjv.semester_work.model ;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,8 +22,8 @@ public class Book {
     @Column(unique = true)
     private Long ISBN ;
 
-    @OneToMany(mappedBy = "book", orphanRemoval = true)
-    private List<Review> reviewList;
+    @OneToMany(mappedBy = "reviewed_book", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviewList = new ArrayList<>() ;
 
     /* Constructors : */
 

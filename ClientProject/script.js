@@ -16,6 +16,7 @@ async function fetchBooks() {
 function displayBooks(books) {
     const content = document.getElementById('content');
     content.innerHTML = `
+    	<button class="btn btn-success mb-3" onclick="addBook()">Add Book</button>
         <table class="table">
             <thead>
                 <tr>
@@ -39,12 +40,58 @@ function displayBooks(books) {
                         <td>${book.isbn}</td>
                         <td>
                             <button class="btn btn-primary" onclick="fetchReviews(${book.book_id})">View Reviews of this Book</button>
+			    <button class="btn btn-warning" onclick="updateBook(${book.book_id})">Update</button>
+                            i<button class="btn btn-danger" onclick="deleteBook(${book.book_id})">Delete</button>
+                            <button class="btn btn-success" onclick="addReview(${book.book_id})">Add Review</button>
                         </td>
                     </tr>`).join('')}
             </tbody>
         </table>
     `;
 }
+
+function addBook() {
+    const content = document.getElementById('content');
+    content.innerHTML = `
+        <h3>Add a new Book</h3>
+        <form onsubmit="submitAddBook(event)">
+            <input type="text" id="title" placeholder="Title" required />
+            <input type="text" id="author" placeholder="Author" required />
+            <input type="number" id="year" placeholder="Year" required />
+            <input type="text" id="description" placeholder="Description" required />
+            <input type="text" id="category" placeholder="Category" required />
+            <input type="text" id="isbn" placeholder="ISBN" required />
+            <button class="btn btn-primary" type="submit">Submit</button>
+        </form>
+    `;
+}
+
+async function submitAddBook(event) {
+    event.preventDefault();
+    const book = {
+        title: document.getElementById('title').value,
+        author: document.getElementById('author').value,
+        publication_year: parseInt(document.getElementById('year').value),
+        description: document.getElementById('description').value,
+        category_name: document.getElementById('category').value,
+        isbn: document.getElementById('isbn').value
+    };
+
+
+	try {
+        const response = await fetch(`${API_BASE_URL}/books`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(book)
+        });
+        if (!response.ok) throw new Error('Failed to add a book');
+        fetchBooks();
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to add a book');
+    }
+}
+
 
 async function fetchReviews(bookId) {
     try {

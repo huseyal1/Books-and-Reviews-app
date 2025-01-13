@@ -1,6 +1,6 @@
 package ctu.fit.tjv.semester_work.service ;
 
-import ctu.fit.tjv.semester_work.model.Review ;
+import ctu.fit.tjv.semester_work.model.* ;
 import ctu.fit.tjv.semester_work.repository.ReviewRepository ;
 import org.springframework.beans.factory.annotation.Autowired ;
 import org.springframework.stereotype.Service ;
@@ -19,6 +19,10 @@ public class ReviewService {
 
     public Optional<Review> getReviewById(Long review_id) {
         return reviewRepo.findById(review_id) ;
+    }
+
+    public List<Review> getReviewByBookId(Long book_id) {
+        return reviewRepo.findByBook_Id(book_id) ;
     }
 
     public Review createReview(Review newReview) {

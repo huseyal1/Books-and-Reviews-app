@@ -38,7 +38,7 @@ function displayBooks(books) {
                         <td>${book.publication_year}</td>
                         <td>${book.description}</td>
                         <td>${book.category_name}</td>
-                        <td>${book.ISBN}</td>
+                        <td>${book.isbn}</td>
                         <td>
                             <button class="btn btn-primary" onclick="fetchReviews(${book.book_id})">View Reviews</button>
                         </td>

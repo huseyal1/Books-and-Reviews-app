@@ -21,7 +21,7 @@ public class ReviewService {
         return reviewRepo.findById(review_id) ;
     }
 
-    public Review createBook(Review newReview) {
+    public Review createReview(Review newReview) {
         return reviewRepo.save(newReview) ;
     }
 

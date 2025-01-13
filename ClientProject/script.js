@@ -201,6 +201,7 @@ async function submitAddReview(event, bookId) {
     }
 }
 
+
 // Fetch reviews :
 
 async function fetchReviews(bookId) {
@@ -208,7 +209,8 @@ async function fetchReviews(bookId) {
         const response = await fetch(`${API_BASE_URL}/reviews/book/${bookId}`);
         if (!response.ok) throw new Error('No review added for this book :(');
         const reviews = await response.json();
-        displayReviews(reviews);
+	console.log('Fetched Reviews:', reviews);
+        displayReviews(bookId, reviews);
     } catch (error) {
         console.error('Error:', error);
         document.getElementById('reviews-content').innerHTML = `
@@ -216,7 +218,7 @@ async function fetchReviews(bookId) {
     }
 }
 
-function displayReviews(reviews) {
+function displayReviews(bookId, reviews) {
     const content = document.getElementById('reviews-content');
     content.innerHTML = `
         <h3>⬇Reviews of the Selected Book⬇</h3>
@@ -227,6 +229,7 @@ function displayReviews(reviews) {
                     <th>Rating</th>
                     <th>Comment</th>
                     <th>Date</th>
+		    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -236,10 +239,94 @@ function displayReviews(reviews) {
                         <td>${review.rating}</td>
                         <td>${review.comment}</td>
                         <td>${review.date}</td>
+			<td>
+			    <button class="btn btn-warning btn-sm" onclick="updateReview(${review.review_id})">🔄Update the Review</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteReview(${review.review_id}, ${bookId})">✖️Delete the Review</button>
+			</td>
                     </tr>`).join('')}
             </tbody>
         </table>
     `;
+}
+
+
+// Update a review :
+
+async function updateReview(reviewId) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/reviews/${reviewId}`);
+        if (!response.ok) throw new Error('Failed to fetch review details');
+        const review = await response.json();
+
+        const content = document.getElementById('reviews-content');
+        content.innerHTML = `
+            <h3>Update Review ID: ${reviewId}</h3>
+            <form onsubmit="submitUpdateReview(event, ${reviewId})">
+                <div class="form-group">
+                    <label>Username:</label>
+                    <input type="text" id="username" class="form-control" value="${review.username}" required>
+                </div>
+                <div class="form-group">
+                    <label>Rating:</label>
+                    <input type="text" id="rating" class="form-control" value="${review.rating}" required>
+                </div>
+                <div class="form-group">
+                    <label>Comment:</label>
+                    <textarea id="comment" class="form-control" required>${review.comment}</textarea>
+                </div>
+                <div class="form-group">
+                    <label>Date:</label>
+                    <input type="date" id="date" class="form-control" value="${review.date}" required>
+                </div>
+                <button class="btn btn-primary" type="submit">Submit</button>
+                <button class="btn btn-secondary" type="button" onclick="fetchReviews(${review.book_id})">Cancel</button>
+            </form>
+        `;
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to fetch review details');
+    }
+}
+
+async function submitUpdateReview(event, reviewId) {
+    event.preventDefault();
+    const review = {
+        username: document.getElementById('username').value,
+        rating: document.getElementById('rating').value,
+        comment: document.getElementById('comment').value,
+        date: document.getElementById('date').value
+    };
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/reviews/${reviewId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(review)
+        });
+        if (!response.ok) throw new Error('Failed to update review');
+        alert('Review updated successfully');
+        fetchReviews(reviewId);
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to update review');
+    }
+}
+
+
+// Delete a review :
+
+async function deleteReview(reviewId, bookId) {
+    if (!confirm('Are you sure you want to delete this review?')) return;
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/reviews/${reviewId}`, { method: 'DELETE' });
+        if (!response.ok) throw new Error('Failed to delete review');
+        alert('Review deleted successfully');
+        fetchReviews(bookId);
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to delete review');
+    }
 }
 
 fetchBooks();                    

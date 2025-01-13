@@ -19,7 +19,6 @@ function displayBooks(books) {
         <table class="table">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Title</th>
                     <th>Author</th>
                     <th>Year</th>
@@ -32,7 +31,6 @@ function displayBooks(books) {
             <tbody>
                 ${books.map(book => `
                     <tr>
-                        <td>${book.book_id}</td>
                         <td>${book.title}</td>
                         <td>${book.author}</td>
                         <td>${book.publication_year}</td>
@@ -68,7 +66,6 @@ function displayReviews(reviews) {
         <table class="table">
             <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Username</th>
                     <th>Rating</th>
                     <th>Comment</th>
@@ -78,7 +75,6 @@ function displayReviews(reviews) {
             <tbody>
                 ${reviews.map(review => `
                     <tr>
-                        <td>${review.review_id}</td>
                         <td>${review.username}</td>
                         <td>${review.rating}</td>
                         <td>${review.comment}</td>

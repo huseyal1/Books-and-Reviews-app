@@ -51,13 +51,13 @@ function displayBooks(books) {
 async function fetchReviews(bookId) {
     try {
         const response = await fetch(`${API_BASE_URL}/reviews/book/${bookId}`);
-        if (!response.ok) throw new Error('Failed to fetch reviews e, yoldash');
+        if (!response.ok) throw new Error('No review added for this book :(');
         const reviews = await response.json();
         displayReviews(reviews);
     } catch (error) {
         console.error('Error:', error);
         document.getElementById('reviews-content').innerHTML = `
-            <div class="alert alert-danger">Failed to load reviews e, yoldash.</div>`;
+            <div class="alert alert-danger">No review added for this book :(</div>`;
     }
 }
 

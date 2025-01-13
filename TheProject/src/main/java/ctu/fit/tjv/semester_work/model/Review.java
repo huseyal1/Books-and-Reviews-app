@@ -13,6 +13,7 @@ public class Review {
     private String rating ;
     private String comment ;
     private String date ;
+    private String username ;
 
     @ManyToOne
     private Book reviewed_book ;
@@ -23,11 +24,12 @@ public class Review {
         // Default constructor.
     }
 
-    public Review(String rating, String comment, String date, Book reviewed_book) {
+    public Review(String rating, String comment, String date, String username, Book reviewed_book) {
         this.comment = comment ;
         this.date = date ;
         this.reviewed_book = reviewed_book ;
         this.rating = rating ;
+        this.username = username ;
     }
 
     /* Getters and Setters */
@@ -62,6 +64,14 @@ public class Review {
 
     public void setDate(String newDate) {
         this.date = newDate ;
+    }
+
+    public String getUsername() {
+        return username ;
+    }
+
+    public void setUsername(String newUsername) {
+        this.username = newUsername ;
     }
 
     public Book getReviewed_book() {

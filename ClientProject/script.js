@@ -3,20 +3,19 @@ const API_BASE_URL = 'http://localhost:8080';
 async function fetchBooks() {
     try {
         const response = await fetch(`${API_BASE_URL}/books`);
-        if (!response.ok) throw new Error('Failed to fetch books');
+        if (!response.ok) throw new Error('Failed to fetch books e, yoldash');
         const books = await response.json();
         displayBooks(books);
     } catch (error) {
         console.error('Error:', error);
         document.getElementById('content').innerHTML = `
-            <div class="alert alert-danger">Failed to load books.</div>`;
+            <div class="alert alert-danger">Failed to load books e, yoldash</div>`;
     }
 }
 
 function displayBooks(books) {
     const content = document.getElementById('content');
     content.innerHTML = `
-        <h2>Books</h2>
         <table class="table">
             <thead>
                 <tr>
@@ -51,14 +50,14 @@ function displayBooks(books) {
 
 async function fetchReviews(bookId) {
     try {
-        const response = await fetch(`${API_BASE_URL}/books/${bookId}/reviews`);
-        if (!response.ok) throw new Error('Failed to fetch reviews');
+        const response = await fetch(`${API_BASE_URL}/reviews`);
+        if (!response.ok) throw new Error('Failed to fetch reviews e, yoldash');
         const reviews = await response.json();
         displayReviews(reviews);
     } catch (error) {
         console.error('Error:', error);
         document.getElementById('reviews-content').innerHTML = `
-            <div class="alert alert-danger">Failed to load reviews.</div>`;
+            <div class="alert alert-danger">Failed to load reviews e, yoldash.</div>`;
     }
 }
 

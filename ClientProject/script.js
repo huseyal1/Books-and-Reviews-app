@@ -161,6 +161,46 @@ async function deleteBook(bookId) {
     }
 }
 
+// Add a review :
+
+function addReview(bookId) {
+    const content = document.getElementById('reviews-content');
+    content.innerHTML = `
+        <h3>Add a new Review according to the Book ID: ${bookId}</h3>
+        <form onsubmit="submitAddReview(event, ${bookId})">
+            <input type="text" id="username" placeholder="Username" required />
+            <input type="text" id="rating" placeholder="Rating" required />
+            <textarea id="comment" placeholder="Comment" required></textarea>
+            <input type="date" id="date" required />
+            <button class="btn btn-primary" type="submit">Submit</button>
+        </form>
+    `;
+}
+
+async function submitAddReview(event, bookId) {
+    event.preventDefault();
+    const review = {
+        username: document.getElementById('username').value,
+        rating: document.getElementById('rating').value,
+        comment: document.getElementById('comment').value,
+        date: document.getElementById('date').value,
+        reviewed_book: { book_id: bookId }
+    };
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/reviews`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(review)
+        });
+        if (!response.ok) throw new Error('Failed to add a review');
+        fetchReviews(bookId); // Reload reviews for the book
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to add a review');
+    }
+}
+
 // Fetch reviews :
 
 async function fetchReviews(bookId) {

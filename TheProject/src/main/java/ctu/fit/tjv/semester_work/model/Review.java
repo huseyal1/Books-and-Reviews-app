@@ -15,7 +15,6 @@ public class Review {
     private String date ;
 
     @ManyToOne
-    @JoinColumn(name = "book_id")
     private Book reviewed_book ;
 
     /* Constructors : */

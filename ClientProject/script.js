@@ -16,7 +16,7 @@ async function fetchBooks() {
 function displayBooks(books) {
     const content = document.getElementById('content');
     content.innerHTML = `
-    	<button class="btn btn-success mb-3" onclick="addBook()">Add Book</button>
+    	<button class="btn btn-success mb-3" onclick="addBook()">➕Add a new Book</button>
         <table class="table">
             <thead>
                 <tr>
@@ -39,16 +39,18 @@ function displayBooks(books) {
                         <td>${book.category_name}</td>
                         <td>${book.isbn}</td>
                         <td>
-                            <button class="btn btn-primary" onclick="fetchReviews(${book.book_id})">View Reviews of this Book</button>
-			    <button class="btn btn-warning" onclick="updateBook(${book.book_id})">Update</button>
-                            i<button class="btn btn-danger" onclick="deleteBook(${book.book_id})">Delete</button>
-                            <button class="btn btn-success" onclick="addReview(${book.book_id})">Add Review</button>
+                            <button class="btn btn-primary" onclick="fetchReviews(${book.book_id})">👀View Reviews of this Book</button>
+			    <button class="btn btn-warning" onclick="updateBook(${book.book_id})">🔄Update the Book</button>
+                            <button class="btn btn-danger" onclick="deleteBook(${book.book_id})">✖️Delete the Book</button>
+                            <button class="btn btn-success" onclick="addReview(${book.book_id})">➕Add a Review for this Book</button>
                         </td>
                     </tr>`).join('')}
             </tbody>
         </table>
     `;
 }
+
+// Add a Book :
 
 function addBook() {
     const content = document.getElementById('content');
@@ -93,6 +95,74 @@ async function submitAddBook(event) {
 }
 
 
+// Update a book :
+
+async function updateBook(bookId) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/books/${bookId}`);
+        if (!response.ok) throw new Error('Failed to fetch book details');
+        const book = await response.json();
+
+        const content = document.getElementById('content');
+        content.innerHTML = `
+            <h3>Update the Book</h3>
+            <form onsubmit="submitUpdateBook(event, ${bookId})">
+                <input type="text" id="title" value="${book.title}" required />
+                <input type="text" id="author" value="${book.author}" required />
+                <input type="number" id="year" value="${book.publication_year}" required />
+                <input type="text" id="description" value="${book.description}" required />
+                <input type="text" id="category" value="${book.category_name}" required />
+                <input type="text" id="isbn" value="${book.isbn}" required />
+                <button class="btn btn-primary" type="submit">Submit</button>
+            </form>
+        `;
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to fetch book details');
+    }
+}
+
+async function submitUpdateBook(event, bookId) {
+    event.preventDefault();
+    const book = {
+        title: document.getElementById('title').value,
+        author: document.getElementById('author').value,
+        publication_year: parseInt(document.getElementById('year').value),
+        description: document.getElementById('description').value,
+        category_name: document.getElementById('category').value,
+        isbn: document.getElementById('isbn').value
+    };
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/books/${bookId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(book)
+        });
+        if (!response.ok) throw new Error('Failed to update the book');
+        fetchBooks();
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to the update book');
+    }
+}
+
+// Delete a book :
+
+async function deleteBook(bookId) {
+    if (!confirm('So.. are you really sure you want to delete this book?')) return;
+    try {
+        const response = await fetch(`${API_BASE_URL}/books/${bookId}`, { method: 'DELETE' });
+        if (!response.ok) throw new Error('Failed to delete the book');
+        fetchBooks();
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to delete the book');
+    }
+}
+
+// Fetch reviews :
+
 async function fetchReviews(bookId) {
     try {
         const response = await fetch(`${API_BASE_URL}/reviews/book/${bookId}`);
@@ -109,7 +179,7 @@ async function fetchReviews(bookId) {
 function displayReviews(reviews) {
     const content = document.getElementById('reviews-content');
     content.innerHTML = `
-        <h3>Reviews</h3>
+        <h3>⬇Reviews of the Selected Book⬇</h3>
         <table class="table">
             <thead>
                 <tr>

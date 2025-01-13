@@ -50,7 +50,7 @@ function displayBooks(books) {
 
 async function fetchReviews(bookId) {
     try {
-        const response = await fetch(`${API_BASE_URL}/reviews`);
+        const response = await fetch(`${API_BASE_URL}/reviews/book/${book_id}`);
         if (!response.ok) throw new Error('Failed to fetch reviews e, yoldash');
         const reviews = await response.json();
         displayReviews(reviews);

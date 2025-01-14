@@ -20,8 +20,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    runtimeOnly("com.h2database:h2") // for now, used for simplicity when checking
-
+    implementation("org.postgresql:postgresql:42.7.2")
 }
 
 tasks.test {
